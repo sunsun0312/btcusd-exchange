@@ -5,8 +5,26 @@ import moment from 'moment'
 import './App.css';
 
 function App() {
+  // bitCoin amount
   const [amount, setAmount] = useState("");
-  const rate = 4;
+  const [rate, setRate] = useState("");
+
+  const handleAmount = (event) => {
+    setAmount(event.target.value);
+  }
+
+  useEffect(()=>{
+    async function result() {
+      await axios({
+        method: "get",
+        url: "https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=BTC&to_currency=USD&apikey=U3HPNCLSBK8SO87H"
+      }).then((data)=>{
+        // console .log(data.data["Realtime Currency Exchange Rate"]);
+        setRate(data.data["Realtime Currency Exchange Rate"]["5. Exchange Rate"])
+      }).catch((err)=>console.log(err));
+    }
+    result();
+  },[])
 
   return (
     <div>
@@ -20,17 +38,21 @@ function App() {
               <label className="currency">BitCoin</label>
             </div>
             <div className="col-md-4">
-              <input className="rate" type="text" value={amount} placeholder="1"></input>
+              <input className="rate" value={amount} placeholder="1" onChange={handleAmount}></input>
             </div>
             
           </div>
           <br/>
           <div className="row">
             <div className="col-md-6">
-              <label className="currency">USD</label>
+              <label className="currency">USD($)</label>
             </div>
             <div className="col-md-4">
-              <input className="rate" type="text" value={parseInt(amount) * rate} disabled></input>
+              {/* update USD according to the amount of Bitcoin*/}
+              {amount ? parseInt(amount) ? <input className="rate" type="text" value={parseInt(amount) * parseFloat(rate)} disabled></input>
+                : <input className="rate" value={parseFloat(rate)} disabled></input>
+                : <input className="rate" value={parseFloat(rate)} disabled></input>}
+              
             </div>
             
           </div>
