@@ -7,7 +7,7 @@ import './App.css';
 function App() {
   // bitCoin amount
   const [amount, setAmount] = useState("");
-  const [rate, setRate] = useState("");
+  const [rate, setRate] = useState(0.0);
 
   const handleAmount = (event) => {
     setAmount(event.target.value);
@@ -20,7 +20,7 @@ function App() {
         url: "https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=BTC&to_currency=USD&apikey=U3HPNCLSBK8SO87H"
       }).then((data)=>{
         // console .log(data.data["Realtime Currency Exchange Rate"]);
-        setRate(data.data["Realtime Currency Exchange Rate"]["5. Exchange Rate"])
+        setRate(parseFloat(data.data["Realtime Currency Exchange Rate"]["5. Exchange Rate"]))
       }).catch((err)=>console.log(err));
     }
     result();
@@ -49,7 +49,7 @@ function App() {
             </div>
             <div className="col-md-4">
               {/* update USD according to the amount of Bitcoin*/}
-              {amount ? parseInt(amount) ? <input className="rate" type="text" value={parseInt(amount) * parseFloat(rate)} disabled></input>
+              {amount ? parseInt(amount) ? <input className="rate" value={parseInt(amount) * parseFloat(rate)} disabled></input>
                 : <input className="rate" value={parseFloat(rate)} disabled></input>
                 : <input className="rate" value={parseFloat(rate)} disabled></input>}
               

@@ -3,10 +3,10 @@
 .card {
   margin:auto;
   margin-top:50px;
-  width: 30%;
   text-align: center;
   justify-content: center;
-  height: 200px;
+  width: 500px;
+  height: 230px;
 }
 
 .currency {
